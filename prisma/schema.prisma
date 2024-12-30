@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+
+
+
+//====================   ESTRUTURA NA QUAL É DIVIDIDA DENTRO DO BANCO DE DADOS ======================================// 
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//---------------------//--------------------------//----------------
+//Como eu faço para gerar essa tabela no BANCO DE DADOS????
+  // CRIAR UMA MIGRATION:  yarn prisma migrate dev
+//---------------------//--------------------------//----------------
+
+
+// Dessa forma essa categorizado no meu banco de dados 
+model User {
+  id String @id @default(uuid())
+  name String
+  email String
+  password String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  
+  // como eu quero que ela seja criado no meu banco de dados 
+
+  @@map("users")
+
+}
+//---------------------//--------------------------//----------------
+
+
+// Dessa forma essa categorizado no meu banco de dados 
+model Category{
+  id String @id @default(uuid())
+  name String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+
+
+  
+  @@map("categories") 
+  products Product[]  // criei a relação dos produtos para ser adicionado dentro de categorias 
+}
+
+//---------------------//--------------------------//----------------
+
+// Dessa forma essa categorizado no meu banco de dados 
+model Product{
+  id String @id @default(uuid())
+  name String
+  price String
+  description String
+  banner String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+
+
+
+  category Category @relation(fields: [category_id], references: [id]) //  Com isso relacionei ela dentro do Product, com isso precisei dar uma referencia a essa categoria, usei o ID 
+
+
+  @@map("products")
+  category_id String
+  items Item[]
+}
+
+//---------------------//--------------------------//----------------
+
+
+// Dessa forma essa categorizado no meu banco de dados 
+model Order{
+  id String @id @default(uuid())
+  table Int 
+  status Boolean @default(false) //mas eu so quero que seja true quando concluir o pedido, no entanto ele começa FALSE
+  draft Boolean @default(true) // começa como true porque eu nao quero mostrar um pedido na cozinha que ainda esta em rascunho 
+  name String? // "?" serve para ser opcional caso queira colocar o nome do cliente na comanda 
+ 
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@map("orders")
+  items Item[]
+}
+//---------------------//--------------------------//----------------
+
+// Dessa forma essa categorizado no meu banco de dados 
+model Item{
+  id String @id @default(uuid())
+  amount Int
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  order Order @relation(fields: [order_id], references: [id])
+  product Product @relation(fields: [product_id], references: [id])
+
+  @@map("items")
+  order_id String
+  product_id String
+
+}
