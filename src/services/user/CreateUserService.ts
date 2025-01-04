@@ -30,7 +30,7 @@ class CreateUserServices{
         // ======= 2° VERIFICAR SE ESSE EMAIL JA ESTA CADASTRADO =============
 
        // userTeste.findFirst BUSCA ALGUM ITEM, NO CASO O PRIMEIRO QUE ELE ENCONTRAR
-        const userAlreadyExists = await prismaClient.userTeste.findFirst({
+        const userAlreadyExists = await prismaClient.user.findFirst({
             where:{ // ele ta buscando no banco algum email, se for igual a esse que estou tentando cadastrar vai colocar dentro dessa variavel userAlreadyExists
                 email: email 
             }
@@ -47,7 +47,7 @@ class CreateUserServices{
         const passwordHash = await hash(password, 8) // nessa variavel criei a criptografia da senha e importei para a linha 53 criptografar a senha no banco 
 
 
-        const user = await prismaClient.userTeste.create({
+        const user = await prismaClient.user.create({
             data:{
                 name: name,
                 email: email,

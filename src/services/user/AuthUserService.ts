@@ -22,7 +22,7 @@ class AuthUserService{
         console.log(email)
 
         // Verificar se o email existe 
-        const user = await prismaClient.userTeste.findFirst({
+        const user = await prismaClient.user.findFirst({
             where:{   //ele ta buscando no banco algum email 
                 email: email
             }

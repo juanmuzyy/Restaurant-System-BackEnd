@@ -26,7 +26,7 @@ import { SendOrderController } from "./controllers/order/SendOrderController";
 import { ListOrdersController } from "./controllers/order/ListOrdersController";
 import { DetailUserController } from "./controllers/user/DetailUserController";
 import { FinishOrderController } from "./controllers/order/FinishOrderController";
-
+import { DetailOrderController } from "./controllers/order/DetailOrderController";
 
 const router = Router();
 
@@ -58,7 +58,8 @@ router.get('/category', isAuthenticated, new ListCategoryController().handle)
 
 // ============  ROTAS DE PRODUCT ================ 
 
-router.post('/product', isAuthenticated, upload.single('file'), new CreateProductController().handle) // ao criar o produto tem a póssibilidade de colocar uma img por conta do
+//router.post('/product', isAuthenticated, upload.single('file'), new CreateProductController().handle) // ao criar o produto tem a póssibilidade de colocar uma img por conta do
+router.post('/product', isAuthenticated, new CreateProductController().handle) // ao criar o produto tem a póssibilidade de colocar uma img por conta do
 
 router.get('./category/product', isAuthenticated, new ListByCategoryController().handle)
 
@@ -71,7 +72,8 @@ router.post('/order/add', isAuthenticated, new AddItemController().handle) //adi
 router.delete('/order/remove', isAuthenticated, new RemoveItemController().handle) // deletar algo da mesa 
 router.put('/order/send', isAuthenticated, new SendOrderController().handle) // para atualizar algo
 router.get('/orders', isAuthenticated, new ListOrdersController().handle) // colocar os pedidos em ordem 
-router.get('/order/detail', isAuthenticated, new DetailUserController().handle) // saber os detalhes de uma mesa o que tem de pedido 
+router.get('/order/detail', isAuthenticated, new DetailOrderController().handle) // saber os detalhes de uma mesa o que tem de pedido 
 router.put('/order/finish', isAuthenticated, new FinishOrderController().handle)
 
 export {router};
+
